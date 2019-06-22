@@ -15,7 +15,7 @@
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('user_id', __('User')) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('Users.last', __('User')) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('purpose_id', __('Purpose')) ?></th>
                 <th scope="col" style="width:55%"><?= __('Bio') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
@@ -25,21 +25,21 @@
             <?php foreach ($bios as $bio): ?>
             <tr>
                 <td><?= $bio->has('user') ? $bio->user->print_name : '' ?></td>
-                <td><?= $bio->has('purpose') ? $this->Html->link($bio->purpose->name, ['controller' => 'Purposes', 'action' => 'view', $bio->purpose->id]) : '' ?></td>
+                <td><?= $bio->has('purpose') ? $bio->purpose->name : '' ?></td>
                 <td><?= $bio->text ?></td>
                 <td class="actions"><div class="btn-group" role="group">
                     <?= $this->Html->link(
-                        $this->Pretty->iconView($bio->purpose->name),
+                        $this->Pretty->iconView($bio->user->print_name . " - " . $bio->purpose->name),
                         ['action' => 'view', $bio->id],
                         ['escape' => false,  'class' => 'btn btn-outline-dark btn-sm']
                     ) ?>
                     <?= $this->Html->link(
-                        $this->Pretty->iconEdit($bio->purpose->name),
+                        $this->Pretty->iconEdit($bio->user->print_name . " - " . $bio->purpose->name),
                         ['action' => 'edit', $bio->id],
                         ['escape' => false,  'class' => 'btn btn-outline-dark btn-sm']
                     ) ?>
                     <?= $this->Form->postLink(
-                        $this->Pretty->iconDelete($bio->purpose->name),
+                        $this->Pretty->iconDelete($bio->user->print_name . " - " . $bio->purpose->name),
                         ['action' => 'delete', $bio->id],
                         ['escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $bio->id),  'class' => 'btn btn-outline-danger btn-sm']
                     ) ?>

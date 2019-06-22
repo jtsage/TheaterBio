@@ -119,6 +119,7 @@ if ( $this->request->getParam('controller') == "Pages" ) {
     echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js');
     echo $this->Html->script('https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js');
     echo $this->Html->script('validator.min');
+    echo $this->Html->script('/ckeditor/ckeditor.js');
   ?>
 
   <script type="text/javascript">
@@ -146,6 +147,9 @@ if ( $this->request->getParam('controller') == "Pages" ) {
       });
     });
     $(document).ready(function() { 
+      if ( $('#text').length > 0 ) {
+        CKEDITOR.replace( 'text' );
+      }
     	$('[role="alert"].error').addClass('alert alert-warning'); 
     	$('#bigcal tr[class^="bg-"]').each(function() { 
     		var color = $(this).css('backgroundColor'),

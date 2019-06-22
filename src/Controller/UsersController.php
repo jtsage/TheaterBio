@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Mailer\Email;
 use Cake\I18n\Time;
@@ -42,7 +43,9 @@ class UsersController extends AppController
 
         $this->set('users', $this->paginate($this->Users));
         $this->set('_serialize', ['users']);
-        $this->set('tz', $this->Auth->user('time_zone'));
+
+
+        $this->set('tz', Configure::read('ServerTimeZoneFix'));
     }
 
 
@@ -122,7 +125,7 @@ class UsersController extends AppController
 
         $this->set('user', $user);
         $this->set('_serialize', ['user']);
-        $this->set('tz', $this->Auth->user('time_zone'));
+        $this->set('tz', Configure::read('ServerTimeZoneFix'));
     }
 
     /**

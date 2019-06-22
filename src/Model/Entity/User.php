@@ -42,10 +42,10 @@ class User extends Entity
         'is_active' => true,
         'is_password_expired' => true,
         'is_admin' => true,
+        'is_verified' => true,
         'last_login_at' => true,
         'created_at' => true,
         'updated_at' => true,
-        'time_zone' => true,
         'reset_hash' => true,
         'reset_hash_time' => true,
         'verify_hash' => true

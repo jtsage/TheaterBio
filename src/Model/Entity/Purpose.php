@@ -31,4 +31,9 @@ class Purpose extends Entity
         'bios' => true,
         'headshots' => true
     ];
+
+    protected function _getLabel()
+{
+    return $this->_properties['name'] . ' - ' . $this->_properties['description'];
+}
 }

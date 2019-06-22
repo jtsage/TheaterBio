@@ -28,7 +28,7 @@ class UsersTable extends Table
         parent::initialize($config);
 
         $this->getTable('users');
-        $this->setDisplayField('id');
+        $this->setDisplayField('print_name');
         $this->setPrimaryKey('id');
 
         $this->hasMany('Bios', [

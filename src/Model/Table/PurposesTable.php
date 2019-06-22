@@ -35,7 +35,7 @@ class PurposesTable extends Table
         parent::initialize($config);
 
         $this->setTable('purposes');
-        $this->setDisplayField('name');
+        $this->setDisplayField('label');
         $this->setPrimaryKey('id');
 
         $this->hasMany('Bios', [
