@@ -65,53 +65,31 @@ Then, from the install folder, you'll need to run:
 
 This will create the empty database.  Next, run:
 
-    $ ./bin cake tdtrac install
-
-This will set up the couple routine triggers and an initial user.  You can choose **not** to use 
-the initial user if you prefer, you'll need to run the following in order to add your first user:
-
     $ ./bin cake tdtrac adduser [-a] [-n] <UserName> <NewPassword> <FirstName> <LastName>
 
 ## Fix Permissions
 
-Check to see if there is a ./logs and ./tmp folder.  Then, make them writable by your webserver.  From the install folder:
+Check to see if there is a ./logs and ./tmp folder.  Then, make them writable by your webserver.
 
-    $ mkdir logs; chown -R a+w logs
-    $ mkdir tmp; chown -R a+w tmp
+From the install folder:
+
+    $ mkdir logs; chmod -R a+w logs
+    $ mkdir tmp; chmod -R a+w tmp
+
+Also, you'll need to create webroot/files for headshot uploads.
+
+    $ mkdir webroot/files; chmod a+w webroot/files
 
 ## Ready to go?
 
-Go to the instance in a web browser **AND CHANGE THE DEFAULT PASSWORD**, as it is "password". Also, 
-the username is "admin@tdtrac.com", the same as for the demo. This is probably a security risk.
-
-## Scheduled Tasts
-
-Using scheduled tasks?  Make sure you add it to cron. It needs to run as the webserver user.  
-Something like in your crontab (assuming you have passwordless sudo access).
-
-    $ crontab -e
-
-Add something like:
-
-    0 * * * * /usr/bin/sudo -u www-data /path/to/install/bin/cake tdtrac cron
-
-Or, if your webserver user is www-data, you can add it to that user's crontab
-
-    $ sudo crontab -u www-data -e
-
-Add something like:
-
-    0 * * * * /path/to/install/bin/cake tdtrac cron
-
-These examples are running the cron processes once an hour.  That's probably plenty - TDTracX 
-does not require any cron process to work, only if you want to send scheduled e-mails.
+Go to the instance in a web browser.  Should be good to go.
 
 ## Issue Tracker
 
 Any issues, please head to github: 
-[https://github.com/jtsage/TDTracX](https://github.com/jtsage/TDTracX)
+[https://github.com/jtsage/TheaterBio](https://github.com/jtsage/TheaterBio)
 
 ## Author
 
-This is the work of J.T.Sage (jtsage+datebox@gmail.com) - TDTracX is covered under the MIT License, 
-inherited from the CakePHP project it relies on.  Expedited support for this software is available from the project website, for a fee.
+This is the work of J.T.Sage (jtsage+datebox@gmail.com) - TheaterBio is covered under
+the MIT License, inherited from the CakePHP project it relies on.

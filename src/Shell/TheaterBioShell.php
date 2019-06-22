@@ -11,19 +11,16 @@ use Cake\Core\Configure;
 use Cake\Chronos\Chronos;
 
 /**
- * Tdtrac shell command.
+ * Theater Bio shell command.
  */
-class TdtracShell extends Shell
+class TheaterBioShell extends Shell
 {
 
     public function getOptionParser()
     {
         $parser = parent::getOptionParser();
         $parser
-            ->setDescription('A small set of utilities to streamline administering TDTracX')
-            ->addSubcommand('install', [
-                'help' => 'Run the install routine'
-            ])
+            ->setDescription('A small set of utilities to streamline administering TheaterBio')
             ->addSubcommand('adduser', [
                 'help' => 'Add a user',
                 'parser' => [
@@ -35,8 +32,7 @@ class TdtracShell extends Shell
                         'LastName' => [ 'help' => 'The last name of the user', 'required' => true ]
                     ],
                     'options' => [
-                        'isAdmin' => [ 'short' => 'a', 'boolean' => true, 'help' => 'This user is an admin', 'default' => false ],
-                        'isNotified' => [ 'short' => 'n', 'boolean' => true, 'help' => 'This user is notified', 'default' => false ]
+                        'isAdmin' => [ 'short' => 'a', 'boolean' => true, 'help' => 'This user is an admin', 'default' => false ]
                     ]
                 ]
             ])
@@ -139,9 +135,9 @@ class TdtracShell extends Shell
             'password' => $pass,
             'first' => $first,
             'last' => $last,
-            'is_notified' => ($this->params['isNotified'] ? 1:0 ),
+            'print_name' => $first . " " . $last,
+            'is_verified' => 1,
             'is_admin' => ($this->params['isAdmin'] ? 1:0 ),
-            'time_zone' => 'America/Detroit'
         ]);
 
         if ( $this->Users->save($thisUser) ) {
@@ -151,56 +147,6 @@ class TdtracShell extends Shell
         }
     }
 
-    public function install() 
-    {
-        $conn = ConnectionManager::get('default');
-
-        $selection = $this->in('Set up triggers?', ['Y', 'N'], 'Y');
-
-        if ( $selection == 'Y' || $selection == 'y' ) {
-            $this->out('Setting up triggers');
-
-            $tiggersql1 = "CREATE TRIGGER `compute_work_ins` BEFORE INSERT ON `payrolls` FOR EACH ROW SET NEW.worked = time_to_sec(timediff(NEW.end_time, NEW.start_time))/(60*60);";
-            $tiggersql2 = "CREATE TRIGGER `compute_work_upd` BEFORE UPDATE ON `payrolls` FOR EACH ROW SET NEW.worked = time_to_sec(timediff(NEW.end_time, NEW.start_time))/(60*60);";
-            $conn->execute("DROP TRIGGER IF EXISTS `compute_work_upd`");
-            $conn->execute("DROP TRIGGER IF EXISTS `compute_work_ins`");
-            $conn->execute($tiggersql1);
-            $conn->execute($tiggersql2);
-
-            $this->out('Done.' . $this->nl(1));
-        } else {
-            $this->out('Skipping...' . $this->nl(1));
-        }
-
-        $selection = $this->in('Add admin@tdtrac.com::password?', ['Y', 'N'], 'Y');
-
-        if ( $selection == 'Y' || $selection == 'y' ) {
-            $this->out('Adding user');
-            $this->loadModel('Users');
-
-            $adminUser = $this->Users->newEntity([
-                'username' => 'admin@tdtrac.com',
-                'password' => 'password',
-                'phone' => 1234567890,
-                'first' => 'Administrative',
-                'last' => 'User',
-                'is_notified' => 1,
-                'is_admin' => 1,
-                'time_zone' => 'America/Detroit'
-            ]);
-            if ( $this->Users->save($adminUser) ) {
-                $this->out('Create: Admin User #' . $adminUser->id  . $this->nl(1));
-                $this->out('Please change the password as soon as possible.' . $this->nl(1));
-            } else {
-                $this->out('Unable to add - duplicate email probably' . $this->nl(1));
-            }
-            
-        } else {
-            $this->out('Skipping...' . $this->nl(1));
-        }
-
-        $this->out('Nothing else to do.');
-    }
 
     
 }
