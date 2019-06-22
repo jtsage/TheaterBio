@@ -1,0 +1,4 @@
+/tmp/*
+/logs/*
+/config/tdtracx.php
+/config/Migrations/schema-dump-default.lock
