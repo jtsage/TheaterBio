@@ -5,17 +5,8 @@
         <?php
             echo $this->Form->input('first', ['label' => __("First Name")]);
             echo $this->Form->input('last', ['label' => __("Last Name")]);
-            echo $this->Form->input('phone', ['label' => __("Phone Number")]);
+            echo $this->Form->input('print_name', ['label' => __("Print Name")]);
         ?>
-        <div class="form-group"><label class="control-label"><?= __("Time Zone") ?></label>
-        <?php
-            echo $this->Form->select(
-                'time_zone',
-                array_combine(timezone_identifiers_list(), timezone_identifiers_list()),
-                [ 'default' => 'America/Detroit', 'class' => 'form-control' ]
-            );
-        ?>
-        </div>
     </fieldset>
     <?= $this->Form->button(__('Save'), ['class' => 'btn-default']) ?>
     <?= $this->Form->end() ?>
@@ -27,8 +18,7 @@
 <?= $this->Html->tableCells([
     [__("First Name"),      __("User's first name")],
     [__("Last Name"),       __("User's last name")],
-    [__("Phone Number"),    __("User's 10-digit phone number, no punctuation.")],
-    [__("Time Zone"),       __("User's time zone. Defaults to EST/EDT (USA).")]
+    [__("Print Name"),    __("User's print name")]
 ]); ?>
 </table>
 <?= $this->Pretty->helpMeEnd(); ?>

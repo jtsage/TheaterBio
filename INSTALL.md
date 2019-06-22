@@ -1,14 +1,14 @@
-# TDTrac Install Instructions
+# TheaterBio Install Instructions
 
 ## Download
 
 Option 1 (Likely the better option) - Track Git:
 
-    $ git clone https://github.com/jtsage/TDTracX.git
+    $ git clone https://github.com/jtsage/TheaterBio.git
 
 Option 2 - Static Download - Visit here:
 
-[https://github.com/jtsage/TDTracX/releases](https://github.com/jtsage/TDTracX/releases)
+[https://github.com/jtsage/TheaterBio/releases](https://github.com/jtsage/TheaterBio/releases)
 
 Version numbers follow SemVer - so, release 0.0.10 is **more recent** than 0.0.9
 

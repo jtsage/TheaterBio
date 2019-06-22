@@ -45,39 +45,6 @@
 
 
 
-<div class="related">
-    <a name="messages"></a>
-    <div class="column large-12">
-    <h4 class="subheader"><?= __('Biographies') ?></h4>
-    <?php if (!empty($user->bios)): ?>
-    <table class="table table-striped">
-        <tr>
-            <th><?= __('Created At') ?></th>
-            <th><?= __('Message') ?></th>
-            
-            <th class="actions"><?= __('Actions') ?></th>
-        </tr>
-        <?php foreach ($user->messages as $messages): ?>
-        <tr>
-            <td><?= $messages->created_at->i18nFormat(null, $tz); ?></td>
-            <td><?= h($messages->note) ?></td>
-            
-
-            <td class="actions">
-                 <?= $this->Form->postLink(
-                    $this->Pretty->iconDelete($messages->id),
-                    ['controller' => 'Messages', 'action' => 'delete', $messages->id],
-                    ['escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $messages->id)]
-                ) ?>
-            </td>
-        </tr>
-
-        <?php endforeach; ?>
-    </table>
-    <?php endif; ?>
-    </div>
-</div>
-
 
 <?= $this->Pretty->helpMeStart(__('View User Details')); ?>
 
@@ -88,17 +55,4 @@
         $this->Pretty->helpButton('lock', 'default', __('Lock Button'), __('Change the user\'s password'))
     ], ['class' => 'list-group'], ['class' => 'list-group-item']
 ); ?>
-
-<h4><?= __('Permissions') ?></h4>
-<p><?= __('These lists show the shows that the current user has permissions on. Permissions in TDTracX are on a per-show basis, granting permission on one show does not grant it on any other show.') ?></p>
-<table class="table table-condensed helptable">
-<?= $this->Html->tableCells([
-    [[__("Budget User"), ['class' => 'info']],          __("Budget Users have the ability to add, edit, and delete budget items from the show.")],
-    [[__("Payroll Admin"), ['class' => 'danger']],      __("Payroll admin's have the ability to add, edit, and delete payroll items for any \"Payroll User\" of the show.  Most useful for group supervisors that do not need full system administrator access.  Payroll admin's may also view the payroll report from the show. System administrators can not automatically add payroll items, although they may view any payroll report from any show.")],
-    [[__("Payroll User"), ['class' => 'success']],      __("Payroll users may add payroll items to the show.  They may edit or delete those payroll hours that have not yet been marked as \"paid\". Only payroll users appear on the payroll report for the show.")],
-]); ?>
-</table>
-
-<h4><?= __('Messages') ?></h4>
-<p><?= __('Finally, if there are any messages waiting for the user, they are shown at the bottom of this display, with a delete button.  At this time, there is very little internal messaging used, preferring e-mail to the internal system.') ?></p>
 <?= $this->Pretty->helpMeEnd(); ?>
