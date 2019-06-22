@@ -1,0 +1,16 @@
+.form-group.required label:after {
+  content:" *";
+  color:red;
+}
+
+tr.bold td { font-weight: 700; }
+
+fieldset { margin-top: 20px; }
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: rgb(235,235,235);
+}
+
+.helptable tr td:first-child {
+	font-weight: 700;
+}
