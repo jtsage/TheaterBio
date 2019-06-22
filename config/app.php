@@ -224,7 +224,7 @@ return [
     'Email' => [
         'default' => [
             'transport' => 'default',
-	    'from' => 'tdtracx@tdtrac.com',
+	    'from' => 'info@pittsburghmusicals.com',
 	    'emailFormat' => 'both',
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',

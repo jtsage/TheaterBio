@@ -17,7 +17,7 @@ class UsersController extends AppController
 
     public function beforeFilter(\Cake\Event\Event $event)
     {
-        $this->Auth->allow(['logout', 'forgotPassword', 'resetPassword']);
+        $this->Auth->allow(['logout', 'forgotPassword', 'resetPassword', 'verify', 'register']);
     }
     /**
      * Index method
@@ -363,6 +363,44 @@ class UsersController extends AppController
         }
     }
 
+    public function register()
+    {
+        if ( ! is_null($this->Auth->user('id'))) {
+            $this->Flash->error(__('You are logged in.'));
+            return $this->redirect('/');
+        }
+
+        $user = $this->Users->newEntity();
+        if ($this->request->is('post')) {
+            $user = $this->Users->patchEntity($user, $this->request->getData());
+
+            $user = $this->__genVerifyToken($user);
+
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('User account created.  Please check your e-mail to verify your e-mail prior to logging in.'));
+
+                $email = new Email('default');
+
+                $email->setTo(rtrim($user->username))
+                    ->setSubject('Welcome to TheaterBio');
+
+                $email->send("Good day!<br /><br />Welcome to TheaterBio digital bio / headshot system.<br /><br />Please follow the link below to active your account:<br /><br />http://bio.pittsburghmusicals.com/users/verify/" . $user->verify_hash . "<br /><br />Thank you!");
+
+                return $this->redirect(['action' => 'login']);
+            } else {
+                $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            }
+        }
+
+        $this->set('crumby', [
+            ["/", __("Dashboard")],
+            ["/users/", __("Users")],
+            [null, __("Register")]
+        ]);
+        $this->set(compact('user'));
+        $this->set('_serialize', ['user']);
+    }
+
     function resetPassword($hash) {
         if ( ! is_null($this->Auth->user('id'))) {
             $this->Flash->error(__('You have not forgotten your password, you are logged in.'));
@@ -393,6 +431,34 @@ class UsersController extends AppController
                     }
                 }
             }   
+        }
+    }
+
+    function verify($hash) {
+        if ( ! is_null($this->Auth->user('id'))) {
+            $this->Flash->error(__('You have not forgotten your password, you are logged in.'));
+            return $this->redirect('/');
+        }
+        if ( empty($hash) ) {
+            $this->Flash->error(__('That link is invalid, sorry!'));
+            return $this->redirect('/');
+        } else {
+            $user = $this->Users->findByVerifyHash($hash)->first();
+            if ( empty($user) ) {
+                $this->Flash->error(__('That link is invalid, sorry!'));
+                return $this->redirect('/');
+            } else {
+                $user->is_verified = 1;
+                $user->verify_hash = null;
+
+                if ( $this->Users->save($user) ) {
+                    $this->Flash->success(__('Account activated, please login now.'));
+                    return $this->redirect('/users/login');
+                } else {
+                    $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                    return $this->redirect('/');
+                }
+            }
         }
     }
 

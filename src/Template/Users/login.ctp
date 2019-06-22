@@ -2,9 +2,10 @@
 <?= $this->Form->create() ?>
 <?= $this->Form->input('username', ['label' => __("E-Mail Address") ]) ?>
 <?= $this->Form->input('password', ['label' => __("Password") ]) ?>
-<?= $this->Form->button(__('Login'), ['class' => 'btn-default']) ?>
+<?= $this->Form->button(__('Login'), ['class' => 'w-100']) ?>
 <?= $this->Form->end() ?><br />
-<?= $this->Form->postButton(__('Forgot Password'), "/users/forgot_password", ['class' => 'btn-default']) ?>
+<?= $this->Form->postButton(__('Forgot Password'), "/users/forgot_password", ['class' => 'w-100 btn-danger']) ?>
+<?= $this->Html->link(__('Register as New'), "/users/register", ['class' => 'w-100 mt-2 btn btn-warning']) ?>
 
 <?= $this->Pretty->helpMeStart(__('Welcome to TDTracX')); ?>
 <p><?= __("Please login with the e-mail address and password you were issued.  Lost passwords may be retrieved by contacting your system administrator."); ?></p>
