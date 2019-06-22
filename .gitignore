@@ -2,3 +2,4 @@
 /logs/*
 /config/tdtracx.php
 /config/Migrations/schema-dump-default.lock
+/webroot/files

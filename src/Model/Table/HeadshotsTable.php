@@ -55,6 +55,12 @@ class HeadshotsTable extends Table
                 ]
             ]
         ]);
+
+        $this->addBehavior('Josegonzalez/Upload.Upload', [
+            'file' => [
+                'path' => 'webroot{DS}files{DS}{model}{DS}{field-value:purpose_id}{DS}{field-value:user_id}'
+            ],
+        ]);
     }
 
     /**
@@ -69,11 +75,6 @@ class HeadshotsTable extends Table
             ->uuid('id')
             ->allowEmptyString('id', 'create');
 
-        $validator
-            ->scalar('file')
-            ->maxLength('file', 150)
-            ->requirePresence('file', 'create')
-            ->allowEmptyFile('file', false);
 
         $validator->add('purpose_id', [
                 'unique' => [

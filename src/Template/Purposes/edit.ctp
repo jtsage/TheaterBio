@@ -25,3 +25,8 @@
     <?= $this->Form->button(__('Save')) ?>
     <?= $this->Form->end() ?>
 </div>
+
+<?= $this->Pretty->helpMeStart(__('Edit Purpose')); ?>
+
+<p><?= __('Edit a purpose in the system') ?></p>
+<?= $this->Pretty->helpMeEnd(); ?>

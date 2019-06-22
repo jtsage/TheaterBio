@@ -17,3 +17,9 @@
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
 </div>
+
+<?= $this->Pretty->helpMeStart(__('Add Biography')); ?>
+
+<p><?= __('Add a bio to the system') ?></p>
+<p><?= __('Note you may only have 1 bio per purpose in the system') ?></p>
+<?= $this->Pretty->helpMeEnd(); ?>

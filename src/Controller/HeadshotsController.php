@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Filesystem\File;
 
 /**
  * Headshots Controller
@@ -23,7 +24,13 @@ class HeadshotsController extends AppController
         $this->paginate = [
             'contain' => ['Users', 'Purposes']
         ];
-        $headshots = $this->paginate($this->Headshots);
+
+        if ( $this->Auth->user('is_admin')) {
+            $headshots = $this->paginate($this->Headshots->find('all')->order(['purpose_id' => 'ASC', 'Users.last' => 'ASC']));
+        } else {
+            $headshots = $this->paginate($this->Headshots->find('all')
+                ->where(['user_id' => $this->Auth->user('id')]));
+        }
 
         $this->set(compact('headshots'));
     }
@@ -37,11 +44,8 @@ class HeadshotsController extends AppController
      */
     public function view($id = null)
     {
-        $headshot = $this->Headshots->get($id, [
-            'contain' => ['Users', 'Purposes']
-        ]);
-
-        $this->set('headshot', $headshot);
+        $this->Flash->error(__('Viewing headshots is not possible. Just open the file'));
+        return $this->redirect(['action' => 'index']);
     }
 
     /**
@@ -54,15 +58,39 @@ class HeadshotsController extends AppController
         $headshot = $this->Headshots->newEntity();
         if ($this->request->is('post')) {
             $headshot = $this->Headshots->patchEntity($headshot, $this->request->getData());
-            if ($this->Headshots->save($headshot)) {
-                $this->Flash->success(__('The headshot has been saved.'));
+                if ( $this->Auth->user('is_admin') || $headshot->user_id == $this->Auth->user('id') ) {
+                if ($this->Headshots->save($headshot)) {
+                    $this->Flash->success(__('The headshot has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The headshot could not be saved. Please, try again.'));
+            } else {
+                $this->Flash->error(__('You may only add your own headshots.'));
+                return $this->redirect("/headshots");
             }
-            $this->Flash->error(__('The headshot could not be saved. Please, try again.'));
         }
-        $users = $this->Headshots->Users->find('list', ['limit' => 200]);
-        $purposes = $this->Headshots->Purposes->find('list', ['limit' => 200]);
+
+        $userWhere = [
+            'is_active' => 1,
+            'is_verified' => 1,
+        ];
+
+        if ( ! $this->Auth->user('is_admin') ) {
+            $userWhere['id'] = $this->Auth->user('id');
+        }
+
+        $this->set('crumby', [
+            ["/", __("Dashboard")],
+            ["/headshots/", __("Headshots")],
+            [null, __("Add Headshot")]
+        ]);
+
+        $users = $this->Headshots->Users->find('list')
+            ->where($userWhere)
+            ->order(['Users.last' => 'ASC']);
+        $purposes = $this->Headshots->Purposes->find('list', ['limit' => 200])->where(['is_active' => 1 ]);
+        
         $this->set(compact('headshot', 'users', 'purposes'));
     }
 
@@ -75,21 +103,8 @@ class HeadshotsController extends AppController
      */
     public function edit($id = null)
     {
-        $headshot = $this->Headshots->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $headshot = $this->Headshots->patchEntity($headshot, $this->request->getData());
-            if ($this->Headshots->save($headshot)) {
-                $this->Flash->success(__('The headshot has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The headshot could not be saved. Please, try again.'));
-        }
-        $users = $this->Headshots->Users->find('list', ['limit' => 200]);
-        $purposes = $this->Headshots->Purposes->find('list', ['limit' => 200]);
-        $this->set(compact('headshot', 'users', 'purposes'));
+        $this->Flash->error(__('Editing headshots is not possible.  Remove and re-upload'));
+        return $this->redirect(['action' => 'index']);
     }
 
     /**
@@ -103,7 +118,14 @@ class HeadshotsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $headshot = $this->Headshots->get($id);
+        $path = ROOT . DS . $headshot->dir . DS . $headshot->file;
+        $file = new File($path);
+
         if ($this->Headshots->delete($headshot)) {
+            if ( $file->exists() ) {
+                $file->delete();
+            }
+            $file->close();
             $this->Flash->success(__('The headshot has been deleted.'));
         } else {
             $this->Flash->error(__('The headshot could not be deleted. Please, try again.'));

@@ -16,3 +16,8 @@
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
 </div>
+
+<?= $this->Pretty->helpMeStart(__('Add Purpose')); ?>
+
+<p><?= __('Add a purpose to the system') ?></p>
+<?= $this->Pretty->helpMeEnd(); ?>

@@ -18,3 +18,9 @@
     <?= $this->Form->button(__('Save')) ?>
     <?= $this->Form->end() ?>
 </div>
+
+<?= $this->Pretty->helpMeStart(__('Edit Biography')); ?>
+
+<p><?= __('Edit a bio in the system') ?></p>
+<p><?= __('Note you may only have 1 bio per purpose in the system') ?></p>
+<?= $this->Pretty->helpMeEnd(); ?>

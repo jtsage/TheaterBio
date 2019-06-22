@@ -20,10 +20,10 @@
         <table cellpadding="0" cellspacing="0">
             <?php foreach ($purpose->users as $user): ?>
             <tr>
-                <td style="width:150px">
+                <td class="p-2 align-top" style="width:190px">
                 <?php foreach ( $user->headshots as $headshot ): ?>
                 <?php if ( $headshot->purpose_id == $purpose->id ) : ?>
-                    <img src="/headshots/<?= $headshot->file ?>" style="width: 150px; height:auto;">
+                    <img src="<?= preg_replace("/webroot/", "", $headshot->dir) . "/" . $headshot->file ?>" class="img-fluid">
                 <?php endif; ?>
                 <?php endforeach; ?>
                 </td>

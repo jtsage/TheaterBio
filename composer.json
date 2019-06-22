@@ -13,6 +13,7 @@
         "friendsofcake/cakephp-csvview": "^3.3",
         "gourmet/email": "^3.1",
         "gourmet/whoops": "^1.1",
+        "josegonzalez/cakephp-upload": "^4.0",
         "mobiledetect/mobiledetectlib": "2.*",
         "twbs/bootstrap": "3.*"
     },

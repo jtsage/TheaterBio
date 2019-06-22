@@ -4,52 +4,39 @@
  * @var \App\Model\Entity\Headshot[]|\Cake\Collection\CollectionInterface $headshots
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Headshot'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Purposes'), ['controller' => 'Purposes', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Purpose'), ['controller' => 'Purposes', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
+<?php $last_purpose_id = "" ?>
 <div class="headshots index large-9 medium-8 columns content">
-    <h3><?= __('Headshots') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('user_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('purpose_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('file') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($headshots as $headshot): ?>
-            <tr>
-                <td><?= h($headshot->id) ?></td>
-                <td><?= $headshot->has('user') ? $this->Html->link($headshot->user->id, ['controller' => 'Users', 'action' => 'view', $headshot->user->id]) : '' ?></td>
-                <td><?= $headshot->has('purpose') ? $this->Html->link($headshot->purpose->name, ['controller' => 'Purposes', 'action' => 'view', $headshot->purpose->id]) : '' ?></td>
-                <td><?= h($headshot->file) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $headshot->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $headshot->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $headshot->id], ['confirm' => __('Are you sure you want to delete # {0}?', $headshot->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+    <h2><?= __('Headshots') ?>
+    <?= $this->Html->link(
+        $this->Pretty->iconAdd(__("Headshot")),
+        ['action' => 'add'],
+        ['escape' => false, 'class' => 'btn btn-outline-success btn-sm']
+    ) ?>
+    </h2>
+    <div class="row mb-4">
+    <?php foreach ($headshots as $headshot): ?>
+    <?php 
+        if ( $last_purpose_id <> $headshot->purpose_id ) {
+            echo "</div><h3>" . $headshot->purpose->name . "</h3><h5>" . $headshot->purpose->description . "</h5><div class='row mb-5'>";
+            $last_purpose_id = $headshot->purpose_id;
+        }
+    ?>
+    <div class="col-sm-6 col-md-4 col-lg-3">
+        <div class="text-center border rounded-top py-2"></strong><?= $headshot->user->print_name ?></strong></div>
+        <a href="<?= preg_replace("/webroot/", "", $headshot->dir) . "/" . $headshot->file ?>" target="_blank">
+        <img src="<?= preg_replace("/webroot/", "", $headshot->dir) . "/" . $headshot->file ?>" class="img-fluid border">
+        </a><br />
+        <?= $this->Form->postLink(
+            $this->Pretty->iconDelete($headshot->user->print_name),
+            ['action' => 'delete', $headshot->id],
+            ['escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $headshot->id),  'class' => 'btn w-100 btn-outline-danger btn-sm']
+        ) ?>
+        
     </div>
+    <?php endforeach; ?>
 </div>
+<?= $this->Pretty->helpMeStart(__('View Headshots')); ?>
+
+<p><?= __('View the headshots in the system') ?></p>
+<p><?= __('Note you may only have 1 headshot per purpose in the system') ?></p>
+<?= $this->Pretty->helpMeEnd(); ?>
