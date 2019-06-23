@@ -144,6 +144,8 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
 
+            $user->is_verified = 1;
+            
             if ( $this->request->getData('welcomeEmailSend') ) {
                 $email = new Email('default');
                 $email->setTo(rtrim($user->username))
@@ -322,6 +324,8 @@ class UsersController extends AppController
         $token_hex = bin2hex($token_raw);
 
         $user->verify_hash = $token_hex;
+        $user->is_verified = 0;
+        $user->is_admin = 0;
         
         return $user;
     }

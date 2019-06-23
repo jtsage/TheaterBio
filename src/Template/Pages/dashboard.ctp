@@ -25,5 +25,5 @@
 
 
 <?= $this->Pretty->helpMeStart(__('Dashboard')); ?>
-<p><?= __("This display shows a quick dashboard of your available tasks.") ?></p>
+<p><?= __("This display shows a quick dashboard of your biographies and headshots.") ?></p>
 <?= $this->Pretty->helpMeEnd(); ?>
