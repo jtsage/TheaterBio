@@ -5,7 +5,8 @@
         <?php
             echo $this->Form->input('first', ['label' => __("First Name")]);
             echo $this->Form->input('last', ['label' => __("Last Name")]);
-            echo $this->Form->input('print_name', ['label' => __("Print Name")]);
+	    echo $this->Form->input('print_name', ['label' => __("Print Name")]);
+	    echo '<small id="emailHelp" class="form-text mb-3 text-muted">How you wish your name to appear in programs / print uses</small>';
         ?>
     </fieldset>
     <?= $this->Form->button(__('Save'), ['class' => 'btn-default']) ?>
