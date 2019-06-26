@@ -1,4 +1,4 @@
-# TDTracX Shell Tool Commands
+# TheaterBio Shell Tool Commands
 
 For convience, a fair few operations can be achieved from the shell. This is a list of those commands:
 
@@ -26,7 +26,7 @@ _To see help on a subcommand use `cake tdtrac [subcommand] --help`_
 
 Add a user to the database.  All arguments are required.
 
-    cake tdtrac adduser [-a] <UserName> <NewPassword> <FirstName> <LastName>
+    cake theater_bio adduser [-a] <UserName> <NewPassword> <FirstName> <LastName>
 
 
  Options:
@@ -44,8 +44,8 @@ Arguments:
 
 Make a user inactive, or reactivate the user
 
-    cake tdtrac ban [-h] [-q] [-v] <UserName>
-    cake tdtrac unban [-h] [-q] [-v] <UserName>
+    cake theater_bio ban [-h] [-q] [-v] <UserName>
+    cake theater_bio unban [-h] [-q] [-v] <UserName>
 
 Arguments:
 
@@ -55,7 +55,7 @@ Arguments:
 
 Reset the password for a user.  This does not force the user to change it on login. 
 
-    cake tdtrac resetpass [-h] [-q] [-v] <UserName> <NewPassword>
+    cake theater_bio resetpass [-h] [-q] [-v] <UserName> <NewPassword>
 
 Arguments:
 
