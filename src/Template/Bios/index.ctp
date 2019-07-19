@@ -29,6 +29,11 @@
                 <td><?= $bio->text ?></td>
                 <td class="actions"><div class="btn-group" role="group">
                     <?= $this->Html->link(
+                        $this->Pretty->iconDL($bio->user->print_name . " - " . $bio->purpose->name),
+                        ['action' => 'download', $bio->id],
+                        ['escape' => false,  'class' => 'btn btn-outline-info btn-sm']
+                    ) ?>
+                    <?= $this->Html->link(
                         $this->Pretty->iconView($bio->user->print_name . " - " . $bio->purpose->name),
                         ['action' => 'view', $bio->id],
                         ['escape' => false,  'class' => 'btn btn-outline-dark btn-sm']

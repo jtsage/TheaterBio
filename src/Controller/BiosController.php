@@ -49,6 +49,54 @@ class BiosController extends AppController
 
     }
 
+    public function download($id = null)
+    {
+        $bio = $this->Bios->get($id, [
+            'contain' => ['Users', 'Purposes']
+        ]);
+
+        if ( ! ( $this->Auth->user('is_admin') || $bio->user_id == $this->Auth->user('id') ) ) {
+            $this->Flash->error(__('You may only download your own bios.'));
+            return $this->redirect("/bios");
+        }
+
+        exec( 'which pandoc', $output, $returnVar );
+        if ( $returnVar === 0 ) {
+            $pandoc_exec = $output[0];
+        } else {
+            $this->Flash->error(__('This feature is broken.  Sorry.'));
+            return $this->redirect("/bios");
+        }
+
+        $string_bio = "<p><strike>" . $bio->user->print_name . "</strike> <code>(" . $bio->role . ")</code></p>";
+        $string_bio .= $bio->text;
+
+        $temp_file = tempnam(TMP, "BioConvert");
+
+        $file = fopen($temp_file, "w");
+        fwrite($file, $string_bio);
+        fclose($file);
+
+        $pandoc_cmd = $pandoc_exec . " --standalone --from=html --to=icml " . $temp_file;
+        
+        unset($output);
+
+        exec(escapeshellcmd($pandoc_cmd), $output);
+
+        unlink($temp_file);
+
+        $file_name = $bio->user->print_name . "-" . $bio->purpose->name;
+        $file_name = preg_replace("/[^a-zA-Z0-9_\s-]/", "", $file_name);
+        $file_name = preg_replace("/[\s]/", "_", $file_name);
+        $file_name .= ".icml";
+
+        $response = $this->response;
+        $response = $response->withStringBody(implode("\n", $output));
+        $response = $response->withType('xml');
+        $response = $response->withDownload($file_name);
+        return $response;
+    }
+
     /**
      * View method
      *
