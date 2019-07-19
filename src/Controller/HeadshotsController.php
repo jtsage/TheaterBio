@@ -42,10 +42,26 @@ class HeadshotsController extends AppController
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function download($id = null)
     {
-        $this->Flash->error(__('Viewing headshots is not possible. Just open the file'));
-        return $this->redirect(['action' => 'index']);
+        $headshot = $this->Headshots->get($id, [
+            'contain' => ['Users', 'Purposes']
+        ]);
+
+        $file_ext = ltrim(strstr($headshot['file'], '.'), '.');
+
+        $file_name = $headshot->user->print_name . "-" . $headshot->purpose->name;
+        $file_name = preg_replace("/[^a-zA-Z0-9_\s-]/", "", $file_name);
+        $file_name = preg_replace("/[\s]/", "_", $file_name);
+        $file_name .= "." . $file_ext;
+
+        $file_full = ROOT . DS . $headshot['dir'] . DS . $headshot['file'];
+        $response = $this->response->withFile($file_full,
+            ['download' => true, 'name' => $file_name]
+        );
+    // Return the response to prevent controller from trying to render
+    // a view.
+        return $response;
     }
 
     /**

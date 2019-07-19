@@ -23,6 +23,11 @@
     ?>
     <div class="col-sm-6 col-md-4 col-lg-3">
         <div class="text-center border rounded-top py-2"></strong><?= $headshot->user->print_name ?></strong></div>
+        <?= $this->Html->link(
+            $this->Pretty->iconDL(__("Headshot")),
+            ['action' => 'download', $headshot->id],
+            ['escape' => false, 'class' => 'btn btn-outline-info w-100 rounded-0 btn-sm']
+        ) ?>
         <a href="<?= preg_replace("/webroot/", "", $headshot->dir) . "/" . $headshot->file ?>" target="_blank">
         <img src="<?= preg_replace("/webroot/", "", $headshot->dir) . "/" . $headshot->file ?>" class="img-fluid border">
         </a><br />
