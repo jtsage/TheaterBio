@@ -7,6 +7,11 @@
 <div class="purposes view large-9 medium-8 columns content">
     <h3><?= h($purpose->name) ?>
     <?= $this->Html->link(
+            $this->Pretty->iconDL($purpose->name),
+            ['action' => 'download', $purpose->id],
+            ['escape' => false, 'class' => 'btn btn-outline-info btn-sm']
+        ) ?>
+    <?= $this->Html->link(
             $this->Pretty->iconEdit($purpose->name),
             ['action' => 'edit', $purpose->id],
             ['escape' => false, 'class' => 'btn btn-outline-dark btn-sm']

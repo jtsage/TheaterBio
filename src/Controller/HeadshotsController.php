@@ -64,6 +64,34 @@ class HeadshotsController extends AppController
         return $response;
     }
 
+    public function view($id = null, $file = null)
+    {
+        $headshot = $this->Headshots->get($id, [
+            'contain' => ['Users', 'Purposes']
+        ]);
+
+
+        $file_ext = ltrim(strstr($headshot['file'], '.'), '.');
+
+        $file_name = $headshot->user->print_name . "-" . $headshot->purpose->name;
+        $file_name = preg_replace("/[^a-zA-Z0-9_\s-]/", "", $file_name);
+        $file_name = preg_replace("/[\s]/", "_", $file_name);
+        $file_name .= "." . $file_ext;
+
+        if ( is_null($file) ) {
+            // Yikes.  But it works.
+            return $this->redirect(['action' => 'view', $id, $file_name]);
+        }
+
+        $file_full = ROOT . DS . $headshot['dir'] . DS . $headshot['file'];
+        $response = $this->response->withFile($file_full,
+            ['download' => false, 'name' => $file_name]
+        );
+    // Return the response to prevent controller from trying to render
+    // a view.
+        return $response;
+    }
+
     /**
      * Add method
      *

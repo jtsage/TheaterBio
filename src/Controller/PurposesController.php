@@ -52,9 +52,9 @@ class PurposesController extends AppController
         $purpose = $this->Purposes->get($id, [
             'contain' => [
                 'Users' => [
-                   'Headshots'
+                   'Headshots',
+                   'sort' => ['Users.last' => 'ASC', 'Users.first' => 'ASC']
                 ]
-                
             ]
         ]);
 
@@ -65,6 +65,63 @@ class PurposesController extends AppController
         ]);
 
         $this->set('purpose', $purpose);
+    }
+
+    public function download($id = null)
+    {
+        if ( ! $this->Auth->user('is_admin')) {
+            $this->Flash->error(__('Only administrators may access the purposes module.'));
+            return $this->redirect("/");
+        }
+
+        $purpose = $this->Purposes->get($id, [
+            'contain' => [
+                'Users' => [
+                   'Headshots',
+                   'sort' => ['Users.last' => 'ASC', 'Users.first' => 'ASC']
+                ]
+            ]
+        ]);
+
+        exec( 'which pandoc', $output, $returnVar );
+        if ( $returnVar === 0 ) {
+            $pandoc_exec = $output[0];
+        } else {
+            $this->Flash->error(__('This feature is broken.  Sorry.'));
+            return $this->redirect("/bios");
+        }
+
+        $string_bio = "";
+
+        foreach ( $purpose->users as $user ) {
+            $string_bio .= "<p><strike>" . $user->print_name . "</strike> <code>(" . $user->_joinData->role . ")</code></p>";
+            $string_bio .= $user->_joinData->text;
+        }
+
+        $temp_file = tempnam(TMP, "BioConvert");
+
+        $file = fopen($temp_file, "w");
+        fwrite($file, $string_bio);
+        fclose($file);
+
+        $pandoc_cmd = $pandoc_exec . " --standalone --from=html --to=icml " . $temp_file;
+        
+        unset($output);
+
+        exec(escapeshellcmd($pandoc_cmd), $output);
+
+        unlink($temp_file);
+
+        $file_name = $purpose->name;
+        $file_name = preg_replace("/[^a-zA-Z0-9_\s-]/", "", $file_name);
+        $file_name = preg_replace("/[\s]/", "_", $file_name);
+        $file_name .= ".icml";
+
+        $response = $this->response;
+        $response = $response->withStringBody(implode("\n", $output));
+        $response = $response->withType('xml');
+        $response = $response->withDownload($file_name);
+        return $response;
     }
 
     /**

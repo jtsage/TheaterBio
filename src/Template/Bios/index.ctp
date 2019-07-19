@@ -16,7 +16,7 @@
         <thead>
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('Users.last', __('Print Name & Role')) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('purpose_id', __('Purpose')) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('Bios.purpose_id', __('Purpose')) ?></th>
                 <th scope="col" style="width:55%"><?= __('Bio') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>

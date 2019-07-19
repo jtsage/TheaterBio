@@ -30,6 +30,7 @@ class BiosController extends AppController
                 'Users.last',
                 'Bios.purpose_id'
             ],
+            'order' => ['Users.last' => 'ASC', 'Users.first' => 'ASC']
         ];
 
         if ( $this->Auth->user('is_admin')) {

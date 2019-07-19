@@ -28,9 +28,11 @@
             ['action' => 'download', $headshot->id],
             ['escape' => false, 'class' => 'btn btn-outline-info w-100 rounded-0 btn-sm']
         ) ?>
-        <a href="<?= preg_replace("/webroot/", "", $headshot->dir) . "/" . $headshot->file ?>" target="_blank">
-        <img src="<?= preg_replace("/webroot/", "", $headshot->dir) . "/" . $headshot->file ?>" class="img-fluid border">
-        </a><br />
+        <?= $this->Html->link(
+            "<img src=\"" . preg_replace("/webroot/", "", $headshot->dir) . "/" . $headshot->file . "\" class=\"img-fluid border\">",
+            ['action' => 'view', $headshot->id],
+            ['escape' => false, 'target' => '_blank']
+        ) ?><br />
         <?= $this->Form->postLink(
             $this->Pretty->iconDelete($headshot->user->print_name),
             ['action' => 'delete', $headshot->id],

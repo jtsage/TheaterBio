@@ -36,6 +36,11 @@
                         ['escape' => false,  'class' => 'btn btn-outline-dark btn-sm']
                     ) ?>
                     <?= $this->Html->link(
+                        $this->Pretty->iconDL($purpose->name),
+                        ['action' => 'download', $purpose->id],
+                        ['escape' => false, 'class' => 'btn btn-outline-info btn-sm']
+                    ) ?>
+                    <?= $this->Html->link(
                         $this->Pretty->iconEdit($purpose->name),
                         ['action' => 'edit', $purpose->id],
                         ['escape' => false,  'class' => 'btn btn-outline-dark btn-sm']
