@@ -13,6 +13,9 @@ use Cake\View\Helper;
  */
 class DocBlockHelper extends Helper
 {
+    /**
+     * @var bool Whether to add a blank line between different class annotations
+     */
     protected $_annotationSpacing = true;
 
     /**
@@ -29,13 +32,16 @@ class DocBlockHelper extends Helper
         $lines = [];
         if ($className && $classType) {
             $lines[] = "{$className} {$classType}";
-            $lines[] = "";
+        }
+
+        if ($annotations && $lines) {
+            $lines[] = '';
         }
 
         $previous = false;
-        foreach ($annotations as $ann) {
-            if (strlen($ann) > 1 && $ann[0] === '@' && strpos($ann, ' ') > 0) {
-                $type = substr($ann, 0, strpos($ann, ' '));
+        foreach ($annotations as $annotation) {
+            if (strlen($annotation) > 1 && $annotation[0] === '@' && strpos($annotation, ' ') > 0) {
+                $type = substr($annotation, 0, strpos($annotation, ' '));
                 if ($this->_annotationSpacing &&
                     $previous !== false &&
                     $previous !== $type
@@ -44,7 +50,7 @@ class DocBlockHelper extends Helper
                 }
                 $previous = $type;
             }
-            $lines[] = $ann;
+            $lines[] = $annotation;
         }
 
         $lines = array_merge(["/**"], (new Collection($lines))->map(function ($line) {
@@ -63,8 +69,9 @@ class DocBlockHelper extends Helper
      */
     public function associatedEntityTypeToHintType($type, Association $association)
     {
-        if ($association->type() === Association::MANY_TO_MANY ||
-            $association->type() === Association::ONE_TO_MANY
+        $annotationType = $association->type();
+        if ($annotationType === Association::MANY_TO_MANY ||
+            $annotationType === Association::ONE_TO_MANY
         ) {
             return $type . '[]';
         }
@@ -248,7 +255,7 @@ class DocBlockHelper extends Helper
         $annotations[] = "@method \\{$namespace}\\Model\\Entity\\{$entity} newEntity(\$data = null, array \$options = [])";
         $annotations[] = "@method \\{$namespace}\\Model\\Entity\\{$entity}[] newEntities(array \$data, array \$options = [])";
         $annotations[] = "@method \\{$namespace}\\Model\\Entity\\{$entity}|bool save(\\Cake\\Datasource\\EntityInterface \$entity, \$options = [])";
-        $annotations[] = "@method \\{$namespace}\\Model\\Entity\\{$entity}|bool saveOrFail(\\Cake\\Datasource\\EntityInterface \$entity, \$options = [])";
+        $annotations[] = "@method \\{$namespace}\\Model\\Entity\\{$entity} saveOrFail(\\Cake\\Datasource\\EntityInterface \$entity, \$options = [])";
         $annotations[] = "@method \\{$namespace}\\Model\\Entity\\{$entity} patchEntity(\\Cake\\Datasource\\EntityInterface \$entity, array \$data, array \$options = [])";
         $annotations[] = "@method \\{$namespace}\\Model\\Entity\\{$entity}[] patchEntities(\$entities, array \$data, array \$options = [])";
         $annotations[] = "@method \\{$namespace}\\Model\\Entity\\{$entity} findOrCreate(\$search, callable \$callback = null, \$options = [])";

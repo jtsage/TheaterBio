@@ -45,11 +45,13 @@ interface AdapterInterface
     const PHINX_TYPE_STRING = 'string';
     const PHINX_TYPE_CHAR = 'char';
     const PHINX_TYPE_TEXT = 'text';
+    const PHINX_TYPE_SMALL_INTEGER = 'smallinteger';
     const PHINX_TYPE_INTEGER = 'integer';
     const PHINX_TYPE_BIG_INTEGER = 'biginteger';
     const PHINX_TYPE_BIT = 'bit';
     const PHINX_TYPE_FLOAT = 'float';
     const PHINX_TYPE_DECIMAL = 'decimal';
+    const PHINX_TYPE_DOUBLE = 'double';
     const PHINX_TYPE_DATETIME = 'datetime';
     const PHINX_TYPE_TIMESTAMP = 'timestamp';
     const PHINX_TYPE_TIME = 'time';
@@ -181,6 +183,24 @@ interface AdapterInterface
      * @return int The number of breakpoints reset
      */
     public function resetAllBreakpoints();
+
+    /**
+     * Set a migration breakpoint.
+     *
+     * @param \Phinx\Migration\MigrationInterface $migration The migration target for the breakpoint set
+     *
+     * @return \Phinx\Db\Adapter\AdapterInterface
+     */
+    public function setBreakpoint(MigrationInterface $migration);
+
+    /**
+     * Unset a migration breakpoint.
+     *
+     * @param \Phinx\Migration\MigrationInterface $migration The migration target for the breakpoint unset
+     *
+     * @return \Phinx\Db\Adapter\AdapterInterface
+     */
+    public function unsetBreakpoint(MigrationInterface $migration);
 
     /**
      * Does the schema table exist?
