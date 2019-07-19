@@ -24,10 +24,21 @@
                 <?php foreach ( $user->headshots as $headshot ): ?>
                 <?php if ( $headshot->purpose_id == $purpose->id ) : ?>
                     <img src="<?= preg_replace("/webroot/", "", $headshot->dir) . "/" . $headshot->file ?>" class="img-fluid">
+                    <?= $this->Html->link(
+                        $this->Pretty->iconDL(__("Headshot")),
+                        ['controller' => 'headshots', 'action' => 'download', $headshot->id],
+                        ['escape' => false, 'class' => 'btn btn-outline-info w-100 rounded-0 btn-sm']
+                    ) ?>
                 <?php endif; ?>
                 <?php endforeach; ?>
                 </td>
-                <td class="pb-4" ><h4><?= h($user->print_name) ?></h4>
+                <td class="pb-4" ><h4><?= h($user->print_name) ?>
+                <?= $this->Html->link(
+                    $this->Pretty->iconDL(__("Bio")),
+                    ['controller' => 'bios', 'action' => 'download', $user->_joinData->id],
+                    ['escape' => false, 'class' => 'btn btn-outline-info btn-sm']
+                ) ?>
+                </h4>
                 <?= $user->_joinData->text ?>
                 </td>
                 
