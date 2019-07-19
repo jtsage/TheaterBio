@@ -11,7 +11,8 @@
         <?php
             echo $this->Form->control('user_id', ['options' => $users]);
             echo $this->Form->control('purpose_id', ['options' => $purposes]);
-            echo $this->Form->control('text');
+            echo $this->Form->control('role', ['label' => 'Role and/or Title (i.e. Javert']);
+            echo $this->Form->control('text', ['label' => 'Text Body']);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
