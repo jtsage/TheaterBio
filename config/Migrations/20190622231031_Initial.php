@@ -22,6 +22,11 @@ class Initial extends AbstractMigration
                 'limit' => null,
                 'null' => false,
             ])
+            ->addColumn('role', 'string', [
+                'default' => null,
+                'limit' => 150,
+                'null' => true,
+            ])
             ->addColumn('text', 'text', [
                 'default' => null,
                 'limit' => null,
