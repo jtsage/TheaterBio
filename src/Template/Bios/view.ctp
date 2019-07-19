@@ -5,7 +5,7 @@
  */
 ?>
 <div class="bios view large-9 medium-8 columns content">
-    <h3><?= h($bio->user->print_name) . " - " . $bio->purpose->name ?>
+    <h3><?= h($bio->user->print_name) . " - " . $bio->role . " - " . $bio->purpose->name ?>
         <?= $this->Html->link(
             $this->Pretty->iconEdit($bio->user->print_name . " - " . $bio->purpose->name),
             ['action' => 'edit', $bio->id],

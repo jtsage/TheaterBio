@@ -31,6 +31,7 @@ class Bio extends Entity
         'purpose_id' => true,
         'text' => true,
         'user' => true,
-        'purpose' => true
+        'purpose' => true,
+        'role' => true
     ];
 }

@@ -15,7 +15,7 @@
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('Users.last', __('User')) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('Users.last', __('Print Name & Role')) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('purpose_id', __('Purpose')) ?></th>
                 <th scope="col" style="width:55%"><?= __('Bio') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
@@ -24,7 +24,7 @@
         <tbody>
             <?php foreach ($bios as $bio): ?>
             <tr>
-                <td><?= $bio->has('user') ? $bio->user->print_name : '' ?></td>
+                <td><?= $bio->has('user') ? $bio->user->print_name . "<br><em>" . $bio->role . "</em>" : '' ?></td>
                 <td><?= $bio->has('purpose') ? $bio->purpose->name : '' ?></td>
                 <td><?= $bio->text ?></td>
                 <td class="actions"><div class="btn-group" role="group">
