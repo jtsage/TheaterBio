@@ -60,7 +60,7 @@ if ( $this->request->getParam('controller') == "Pages" ) {
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item <?= ($this->request->getParam('controller') == "Bios" ? "active'":"") ?>"><a class="nav-link" href="/bios/"><?= __("Bios") ?></a></li>
-				<li class="nav-item <?= ($this->request->getParam('controller') == "Headshots" ? "class='active'":"") ?>"><a class="nav-link" href="/headshots/"><?= __("Headshots") ?></a></li>
+				<li class="nav-item <?= ($this->request->getParam('controller') == "Photos" ? "class='active'":"") ?>"><a class="nav-link" href="/photos/"><?= __("Headshots") ?></a></li>
 				<li class="nav-item <?= ($this->request->getParam('controller') == "Users" ? "class='active'":"") ?>"><a class="nav-link" href="/users/"><?= ($WhoAmI) ? __("Users") : __("My Account") ?></a></li>
 				<?= ($WhoAmI) ? "<li class='nav-item" . ($this->request->getParam('controller') == "Purposes" ? " class='active'":"") . "'><a class=\"nav-link\" href=\"/purposes/\">Purposes</a></li>" : "" ?>
 				<li class="nav-item"><a class="nav-link" href="/users/logout/"><?= __("Logout") ?></a></li>

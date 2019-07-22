@@ -5,75 +5,52 @@ use App\Controller\AppController;
 use Cake\Filesystem\File;
 
 /**
- * Headshots Controller
+ * Photos Controller
  *
- * @property \App\Model\Table\HeadshotsTable $Headshots
+ * @property \App\Model\Table\PhotosTable $Photos
  *
- * @method \App\Model\Entity\Headshot[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method \App\Model\Entity\Photo[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class HeadshotsController extends AppController
+class PhotosController extends AppController
 {
-
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|void
+     * @return \Cake\Http\Response|null
      */
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Purposes']
+            'contain' => ['Users']
         ];
 
         if ( $this->Auth->user('is_admin')) {
-            $headshots = $this->paginate($this->Headshots->find('all')->order(['purpose_id' => 'ASC', 'Users.last' => 'ASC']));
+            $photos = $this->paginate($this->Photos->find('all')->order(['Users.last' => 'ASC', 'Users.first' => 'ASC']));
         } else {
-            $headshots = $this->paginate($this->Headshots->find('all')
+            $photos = $this->paginate($this->Photos->find('all')
                 ->where(['user_id' => $this->Auth->user('id')]));
         }
 
-        $this->set(compact('headshots'));
+        $this->set(compact('photos'));
     }
 
     /**
      * View method
      *
-     * @param string|null $id Headshot id.
-     * @return \Cake\Http\Response|void
+     * @param string|null $id Photo id.
+     * @return \Cake\Http\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function download($id = null)
-    {
-        $headshot = $this->Headshots->get($id, [
-            'contain' => ['Users', 'Purposes']
-        ]);
-
-        $file_ext = ltrim(strstr($headshot['file'], '.'), '.');
-
-        $file_name = $headshot->user->print_name . "-" . $headshot->purpose->name;
-        $file_name = preg_replace("/[^a-zA-Z0-9_\s-]/", "", $file_name);
-        $file_name = preg_replace("/[\s]/", "_", $file_name);
-        $file_name .= "." . $file_ext;
-
-        $file_full = ROOT . DS . $headshot['dir'] . DS . $headshot['file'];
-        $response = $this->response->withFile($file_full,
-            ['download' => true, 'name' => $file_name]
-        );
-    // Return the response to prevent controller from trying to render
-    // a view.
-        return $response;
-    }
-
     public function view($id = null, $file = null)
     {
-        $headshot = $this->Headshots->get($id, [
-            'contain' => ['Users', 'Purposes']
+        $photo = $this->Photos->get($id, [
+            'contain' => ['Users']
         ]);
 
 
-        $file_ext = ltrim(strstr($headshot['file'], '.'), '.');
+        $file_ext = ltrim(strstr($photo['file'], '.'), '.');
 
-        $file_name = $headshot->user->print_name . "-" . $headshot->purpose->name;
+        $file_name = $photo->user->print_name;
         $file_name = preg_replace("/[^a-zA-Z0-9_\s-]/", "", $file_name);
         $file_name = preg_replace("/[\s]/", "_", $file_name);
         $file_name .= "." . $file_ext;
@@ -83,7 +60,7 @@ class HeadshotsController extends AppController
             return $this->redirect(['action' => 'view', $id, $file_name]);
         }
 
-        $file_full = ROOT . DS . $headshot['dir'] . DS . $headshot['file'];
+        $file_full = ROOT . DS . $photo['dir'] . DS . $photo['file'];
         $response = $this->response->withFile($file_full,
             ['download' => false, 'name' => $file_name]
         );
@@ -91,6 +68,29 @@ class HeadshotsController extends AppController
     // a view.
         return $response;
     }
+    public function download($id = null)
+    {
+        $photo = $this->Photos->get($id, [
+            'contain' => ['Users']
+        ]);
+
+
+        $file_ext = ltrim(strstr($photo['file'], '.'), '.');
+
+        $file_name = $photo->user->print_name;
+        $file_name = preg_replace("/[^a-zA-Z0-9_\s-]/", "", $file_name);
+        $file_name = preg_replace("/[\s]/", "_", $file_name);
+        $file_name .= "." . $file_ext;
+
+        $file_full = ROOT . DS . $photo['dir'] . DS . $photo['file'];
+        $response = $this->response->withFile($file_full,
+            ['download' => true, 'name' => $file_name]
+        );
+    // Return the response to prevent controller from trying to render
+    // a view.
+        return $response;
+    }
+
 
     /**
      * Add method
@@ -99,11 +99,11 @@ class HeadshotsController extends AppController
      */
     public function add()
     {
-        $headshot = $this->Headshots->newEntity();
+        $photo = $this->Photos->newEntity();
         if ($this->request->is('post')) {
-            $headshot = $this->Headshots->patchEntity($headshot, $this->request->getData());
-                if ( $this->Auth->user('is_admin') || $headshot->user_id == $this->Auth->user('id') ) {
-                if ($this->Headshots->save($headshot)) {
+            $photo = $this->Photos->patchEntity($photo, $this->request->getData());
+            if ( $this->Auth->user('is_admin') || $photo->user_id == $this->Auth->user('id') ) {
+                if ($this->Photos->save($photo)) {
                     $this->Flash->success(__('The headshot has been saved.'));
 
                     return $this->redirect(['action' => 'index']);
@@ -111,7 +111,7 @@ class HeadshotsController extends AppController
                 $this->Flash->error(__('The headshot could not be saved. Please, try again.'));
             } else {
                 $this->Flash->error(__('You may only add your own headshots.'));
-                return $this->redirect("/headshots");
+                return $this->redirect("/photos");
             }
         }
 
@@ -126,22 +126,21 @@ class HeadshotsController extends AppController
 
         $this->set('crumby', [
             ["/", __("Dashboard")],
-            ["/headshots/", __("Headshots")],
+            ["/photos/", __("Headshots")],
             [null, __("Add Headshot")]
         ]);
 
-        $users = $this->Headshots->Users->find('list')
+        $users = $this->Photos->Users->find('list')
             ->where($userWhere)
             ->order(['Users.last' => 'ASC']);
-        $purposes = $this->Headshots->Purposes->find('list', ['limit' => 200])->where(['is_active' => 1 ]);
-        
-        $this->set(compact('headshot', 'users', 'purposes'));
+
+        $this->set(compact('photo', 'users'));
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id Headshot id.
+     * @param string|null $id Photo id.
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -154,18 +153,18 @@ class HeadshotsController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Headshot id.
+     * @param string|null $id Photo id.
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $headshot = $this->Headshots->get($id);
-        $path = ROOT . DS . $headshot->dir . DS . $headshot->file;
+        $photo = $this->Photos->get($id);
+        $path = ROOT . DS . $photo->dir . DS . $photo->file;
         $file = new File($path);
 
-        if ($this->Headshots->delete($headshot)) {
+        if ($this->Photos->delete($photo)) {
             if ( $file->exists() ) {
                 $file->delete();
             }

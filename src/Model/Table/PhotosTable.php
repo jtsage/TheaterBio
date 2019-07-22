@@ -7,23 +7,21 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Headshots Model
+ * Photos Model
  *
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
- * @property \App\Model\Table\PurposesTable|\Cake\ORM\Association\BelongsTo $Purposes
  *
- * @method \App\Model\Entity\Headshot get($primaryKey, $options = [])
- * @method \App\Model\Entity\Headshot newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Headshot[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Headshot|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Headshot|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Headshot patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Headshot[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Headshot findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Photo get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Photo newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Photo[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Photo|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Photo saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Photo patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Photo[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Photo findOrCreate($search, callable $callback = null, $options = [])
  */
-class HeadshotsTable extends Table
+class PhotosTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -34,16 +32,12 @@ class HeadshotsTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('headshots');
+        $this->setTable('photos');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
-            'joinType' => 'INNER'
-        ]);
-        $this->belongsTo('Purposes', [
-            'foreignKey' => 'purpose_id',
             'joinType' => 'INNER'
         ]);
 
@@ -58,7 +52,7 @@ class HeadshotsTable extends Table
 
         $this->addBehavior('Josegonzalez/Upload.Upload', [
             'file' => [
-                'path' => 'webroot{DS}files{DS}{model}{DS}{field-value:purpose_id}{DS}{field-value:user_id}'
+                'path' => 'webroot{DS}files{DS}{model}{DS}{field-value:user_id}'
             ],
         ]);
     }
@@ -75,15 +69,13 @@ class HeadshotsTable extends Table
             ->uuid('id')
             ->allowEmptyString('id', 'create');
 
-
-        $validator->add('purpose_id', [
-                'unique' => [
-                    'rule' => ['validateUnique', ['scope' => 'user_id']],
-                    'provider' => 'table',
-                    'message' => 'You may only have 1 headshot per purpose!'
-                ]
-            ]);
-
+        $validator->add('user_id', [
+            'unique' => [
+                'rule' => ['validateUnique'],
+                'provider' => 'table',
+                'message' => 'You may only have 1 headshot per user!'
+            ]
+        ]);
 
         return $validator;
     }
@@ -98,7 +90,6 @@ class HeadshotsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
-        $rules->add($rules->existsIn(['purpose_id'], 'Purposes'));
 
         return $rules;
     }

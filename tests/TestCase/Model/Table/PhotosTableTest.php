@@ -1,22 +1,21 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\HeadshotsTable;
+use App\Model\Table\PhotosTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\HeadshotsTable Test Case
+ * App\Model\Table\PhotosTable Test Case
  */
-class HeadshotsTableTest extends TestCase
+class PhotosTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
-     * @var \App\Model\Table\HeadshotsTable
+     * @var \App\Model\Table\PhotosTable
      */
-    public $Headshots;
+    public $Photos;
 
     /**
      * Fixtures
@@ -24,9 +23,8 @@ class HeadshotsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.Headshots',
-        'app.Users',
-        'app.Purposes'
+        'app.Photos',
+        'app.Users'
     ];
 
     /**
@@ -37,8 +35,8 @@ class HeadshotsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('Headshots') ? [] : ['className' => HeadshotsTable::class];
-        $this->Headshots = TableRegistry::getTableLocator()->get('Headshots', $config);
+        $config = TableRegistry::getTableLocator()->exists('Photos') ? [] : ['className' => PhotosTable::class];
+        $this->Photos = TableRegistry::getTableLocator()->get('Photos', $config);
     }
 
     /**
@@ -48,7 +46,7 @@ class HeadshotsTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Headshots);
+        unset($this->Photos);
 
         parent::tearDown();
     }

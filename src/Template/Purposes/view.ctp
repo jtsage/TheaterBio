@@ -25,19 +25,17 @@
         <table cellpadding="0" cellspacing="0">
             <?php foreach ($purpose->users as $user): ?>
             <tr>
-                <td class="p-2 align-top" style="width:190px">
-                <?php foreach ( $user->headshots as $headshot ): ?>
-                <?php if ( $headshot->purpose_id == $purpose->id ) : ?>
-                    <img src="<?= preg_replace("/webroot/", "", $headshot->dir) . "/" . $headshot->file ?>" class="img-fluid">
+                <td class="border-bottom p-2 align-top pt-3" style="width:190px">
+                <?php foreach ( $user->photos as $photo ): ?>
+                    <img src="<?= preg_replace("/webroot/", "", $photo->dir) . "/" . $photo->file ?>" class="img-fluid">
                     <?= $this->Html->link(
                         $this->Pretty->iconDL(__("Headshot")),
-                        ['controller' => 'headshots', 'action' => 'download', $headshot->id],
+                        ['controller' => 'photos', 'action' => 'download', $photo->id],
                         ['escape' => false, 'class' => 'btn btn-outline-info w-100 rounded-0 btn-sm']
                     ) ?>
-                <?php endif; ?>
                 <?php endforeach; ?>
                 </td>
-                <td class="pb-4" ><h4><?= h($user->print_name) ?>
+                <td class="border-bottom pb-4 pt-3" ><h4><?= h($user->print_name) ?>
                 <?= $this->Html->link(
                     $this->Pretty->iconDL(__("Bio")),
                     ['controller' => 'bios', 'action' => 'download', $user->_joinData->id],

@@ -41,9 +41,6 @@ class PurposesTable extends Table
         $this->hasMany('Bios', [
             'foreignKey' => 'purpose_id'
         ]);
-        $this->hasMany('Headshots', [
-            'foreignKey' => 'purpose_id'
-        ]);
         $this->belongsToMany('Users', [
             'through' => 'Bios',
         ]);

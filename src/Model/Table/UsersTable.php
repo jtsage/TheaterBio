@@ -34,7 +34,7 @@ class UsersTable extends Table
         $this->hasMany('Bios', [
             'foreignKey' => 'user_id'
         ]);
-        $this->hasMany('Headshots', [
+        $this->hasMany('Photos', [
             'foreignKey' => 'user_id'
         ]);
 

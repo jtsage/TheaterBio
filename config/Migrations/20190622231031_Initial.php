@@ -61,18 +61,13 @@ class Initial extends AbstractMigration
             )
             ->create();
 
-        $this->table('headshots', ['id' => false, 'primary_key' => ['id']])
+        $this->table('photos', ['id' => false, 'primary_key' => ['id']])
             ->addColumn('id', 'uuid', [
                 'default' => null,
                 'limit' => null,
                 'null' => false,
             ])
             ->addColumn('user_id', 'uuid', [
-                'default' => null,
-                'limit' => null,
-                'null' => false,
-            ])
-            ->addColumn('purpose_id', 'uuid', [
                 'default' => null,
                 'limit' => null,
                 'null' => false,
@@ -97,18 +92,6 @@ class Initial extends AbstractMigration
                 'limit' => null,
                 'null' => false,
             ])
-            ->addIndex(
-                [
-                    'purpose_id',
-                    'user_id',
-                ],
-                ['unique' => true]
-            )
-            ->addIndex(
-                [
-                    'purpose_id',
-                ]
-            )
             ->addIndex(
                 [
                     'user_id',

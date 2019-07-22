@@ -73,7 +73,7 @@ class PagesController extends AppController
                 'Bios' => [
                    'Purposes'
                 ],
-                'Headshots'
+                'Photos'
             ]
         ]);
 

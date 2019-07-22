@@ -6,10 +6,8 @@
     <?php foreach ($user->bios as $bio): ?>
     <tr>
         <td class="p-2 align-top" style="width:190px">
-        <?php foreach ( $user->headshots as $headshot ): ?>
-        <?php if ( $headshot->purpose_id == $bio->purpose_id ) : ?>
-            <img src="<?= preg_replace("/webroot/", "", $headshot->dir) . "/" . $headshot->file ?>" class="img-fluid">
-        <?php endif; ?>
+        <?php foreach ( $user->photos as $photo ): ?>
+            <img src="<?= preg_replace("/webroot/", "", $photo->dir) . "/" . $photo->file ?>" class="img-fluid">
         <?php endforeach; ?>
         </td>
         <td class="pb-4" >

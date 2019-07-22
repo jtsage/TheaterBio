@@ -4,19 +4,19 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Headshot Entity
+ * Photo Entity
  *
  * @property string $id
  * @property string $user_id
- * @property string $purpose_id
- * @property string $file
+ * @property string|null $file
+ * @property string|null $dir
+ * @property \Cake\I18n\FrozenTime $updated_at
+ * @property \Cake\I18n\FrozenTime $created_at
  *
  * @property \App\Model\Entity\User $user
- * @property \App\Model\Entity\Purpose $purpose
  */
-class Headshot extends Entity
+class Photo extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -28,9 +28,8 @@ class Headshot extends Entity
      */
     protected $_accessible = [
         'user_id' => true,
-        'purpose_id' => true,
         'file' => true,
-        'user' => true,
-        'purpose' => true
+        'dir' => true,
+        'user' => true
     ];
 }

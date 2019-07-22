@@ -52,7 +52,7 @@ class PurposesController extends AppController
         $purpose = $this->Purposes->get($id, [
             'contain' => [
                 'Users' => [
-                   'Headshots',
+                   'Photos',
                    'sort' => ['Users.last' => 'ASC', 'Users.first' => 'ASC']
                 ]
             ]
