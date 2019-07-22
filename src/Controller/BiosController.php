@@ -174,6 +174,39 @@ class BiosController extends AppController
         $this->set(compact('bio', 'users', 'purposes'));
     }
 
+    public function copy($id = null)
+    {
+        $bio = $this->Bios->get($id, [
+            'contain' => []
+        ]);
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $bio = $this->Bios->newEntity();
+            $bio = $this->Bios->patchEntity($bio, $this->request->getData());
+            if ( $this->Auth->user('is_admin') || $bio->user_id == $this->Auth->user('id') ) {
+                if ($this->Bios->save($bio)) {
+                    $this->Flash->success(__('The bio has been saved.'));
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The bio could not be saved. Please, try again.'));
+            } else {
+                $this->Flash->error(__('You may only add your own bios.'));
+                return $this->redirect("/bios");
+            }
+        }
+
+        $this->set('crumby', [
+            ["/", __("Dashboard")],
+            ["/bios/", __("Bios")],
+            [null, __("Copy Bio")]
+        ]);
+
+        $users = $this->Bios->Users->find('list', ['limit' => 200])->where(['id' => $bio->user_id]);
+        $purposes = $this->Bios->Purposes->find('list', ['limit' => 200])->where(['is_active' => 1 ]);
+        $this->set(compact('bio', 'users', 'purposes'));
+    }
+
     /**
      * Edit method
      *

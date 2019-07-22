@@ -43,6 +43,11 @@
                         ['action' => 'edit', $bio->id],
                         ['escape' => false,  'class' => 'btn btn-outline-dark btn-sm']
                     ) ?>
+                    <?= $this->Html->link(
+                        $this->Pretty->iconCopy($bio->user->print_name . " - " . $bio->purpose->name),
+                        ['action' => 'copy', $bio->id],
+                        ['escape' => false,  'class' => 'btn btn-outline-dark btn-sm']
+                    ) ?>
                     <?= $this->Form->postLink(
                         $this->Pretty->iconDelete($bio->user->print_name . " - " . $bio->purpose->name),
                         ['action' => 'delete', $bio->id],

@@ -64,6 +64,10 @@ class PrettyHelper extends Helper
     {
         return PrettyHelper::makeIcon($name, 'plus', __('Add'));
     }
+    public function iconCopy($name)
+    {
+        return PrettyHelper::makeIcon($name, 'copy', __('Copy'));
+    }
     public function iconPerm($name)
     {
         return PrettyHelper::makeIcon($name, 'cogs', __('User Permissions'));

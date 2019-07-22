@@ -10,7 +10,7 @@
     <?= $this->Form->create($photo, ['type' => 'file']) ?>
     <fieldset>
         <legend><?= __('Add Headshot') ?></legend>
-        <p>You may have only 1 headshot in the system.  PNG is the preferred format, but JPG is also accepted.  Please send the highest quality version of the image you have.  Uploads are limited to 20Mb in size.</p>
+        <p>You may have only 1 headshot in the system.  PNG is the preferred format, but JPG is also accepted.  Please send the highest quality version of the image you have.  Uploads are limited to 20Mb in size.  For most applications, your headshot will be cropped square.</p>
 
         <?php
             echo $this->Form->control('user_id', ['options' => $users]);
