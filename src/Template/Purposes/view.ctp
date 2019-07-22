@@ -19,11 +19,19 @@
     </h3>
     <h5><?= h($purpose->description) ?> <small>(<?= ( $purpose->is_active ? "Active" : "Closed" ) ?>)</small></h5>
 
+    <?php $is_prod = false; ?>
     <div class="related mt-5">
-        <h4><?= __('Related Bios and Headshots') ?></h4>
+        <h3><?= __('Related Bios and Headshots') ?></h3>
         <?php if (!empty($purpose->users)): ?>
         <table cellpadding="0" cellspacing="0">
+            <tr><td colspan='2'><h4>Cast</h4></td></tr>
             <?php foreach ($purpose->users as $user): ?>
+            <?php 
+                if ( !$is_prod && $user->_joinData->is_prod == true ) {
+                    echo "<tr><td colspan='2'><h3>Production Staff</h3></td></tr>";
+                    $is_prod = true;
+                }
+            ?>
             <tr>
                 <td class="border-bottom p-2 align-top pt-3" style="width:190px">
                 <?php foreach ( $user->photos as $photo ): ?>

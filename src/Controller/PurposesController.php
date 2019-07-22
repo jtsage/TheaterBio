@@ -53,7 +53,7 @@ class PurposesController extends AppController
             'contain' => [
                 'Users' => [
                    'Photos',
-                   'sort' => ['Users.last' => 'ASC', 'Users.first' => 'ASC']
+                   'sort' => ['Bios.is_prod' => 'ASC', 'Users.last' => 'ASC', 'Users.first' => 'ASC']
                 ]
             ]
         ]);
@@ -77,8 +77,8 @@ class PurposesController extends AppController
         $purpose = $this->Purposes->get($id, [
             'contain' => [
                 'Users' => [
-                   'Headshots',
-                   'sort' => ['Users.last' => 'ASC', 'Users.first' => 'ASC']
+                   'Photos',
+                   'sort' => ['Bios.is_prod' => 'ASC', 'Users.last' => 'ASC', 'Users.first' => 'ASC']
                 ]
             ]
         ]);

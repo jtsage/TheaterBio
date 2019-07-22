@@ -24,7 +24,7 @@
         <tbody>
             <?php foreach ($bios as $bio): ?>
             <tr>
-                <td><?= $bio->has('user') ? $bio->user->print_name . "<br><em>" . $bio->role . "</em>" : '' ?></td>
+                <td><?= $bio->has('user') ? "<strong>" . $bio->user->print_name . "</strong><br><em>" . $bio->role . "</em><br>" . ( $bio->is_prod ? "Production Staff" : "Cast Member" ) : '' ?></td>
                 <td><?= $bio->has('purpose') ? $bio->purpose->name : '' ?></td>
                 <td><?= $bio->text ?></td>
                 <td class="actions"><div class="btn-group" role="group">

@@ -32,6 +32,7 @@ class Bio extends Entity
         'text' => true,
         'user' => true,
         'purpose' => true,
-        'role' => true
+        'role' => true,
+        'is_prod' => true
     ];
 }

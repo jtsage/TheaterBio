@@ -12,6 +12,15 @@
             echo $this->Form->control('user_id', ['options' => $users]);
             echo $this->Form->control('purpose_id', ['options' => $purposes]);
             echo $this->Form->control('role', ['label' => 'Role and/or Title (i.e. Javert']);
+            echo "<h5>Please select Production or Cast member below</h5>";
+            echo $this->Pretty->check('is_prod', 0, [
+                'label-width' => '100',
+                'label-text' => __('Member Of'),
+                'on-text' => __('Production'),
+                'off-text' => __('Cast'),
+                'on-color' => 'success',
+                'off-color' => 'info'
+            ]);
             echo $this->Form->control('text', ['label' => 'Text Body']);
         ?>
     </fieldset>

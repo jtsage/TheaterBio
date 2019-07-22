@@ -27,6 +27,11 @@ class Initial extends AbstractMigration
                 'limit' => 150,
                 'null' => true,
             ])
+            ->addColumn('is_prod', 'boolean', [
+                'default' => false,
+                'limit' => null,
+                'null' => false,
+            ])
             ->addColumn('text', 'text', [
                 'default' => null,
                 'limit' => null,
