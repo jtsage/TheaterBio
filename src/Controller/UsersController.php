@@ -107,7 +107,7 @@ class UsersController extends AppController
             return $this->redirect(['action' => 'view', $this->Auth->user('id')]);
         }
         $user = $this->Users->get($id, [
-            'contain' => ['Bios', 'Headshots']
+            'contain' => ['Bios']
         ]);
 
         if ( $this->Auth->user('is_admin')) {
